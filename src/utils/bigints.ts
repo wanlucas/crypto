@@ -43,31 +43,16 @@ export const are_coprime = (a: bigint, b: bigint): boolean => {
   return gcd(a, b) === 1n;
 };
 
-const extendedGcd = (
-  a: bigint,
-  b: bigint
-): [bigint, bigint, bigint] => {
-  if (b === 0n) {
-    return [a, 1n, 0n];
-  }
+export const extended_gcd = (a: bigint, b: bigint): [bigint, bigint, bigint] => {
+  if (b === 0n) return [a, 1n, 0n];
 
-  const [g, x1, y1] = extendedGcd(b, a % b);
+  const [gcd, x1, y1] = extended_gcd(b, a % b);
 
   const x = y1;
   const y = x1 - (a / b) * y1;
 
-  return [g, x, y];
-};
-
-export const modInverse = (e: bigint, phi: bigint): bigint => {
-  const [g, x] = extendedGcd(e, phi);
-
-  if (g !== 1n) {
-    throw new Error("Inverse does not exist");
-  }
-
-  return (x % phi + phi) % phi;
-};
+  return [gcd, x, y];
+}
 
 export default {
   generate_prime,
@@ -75,5 +60,5 @@ export default {
   is_prime,
   are_coprime,
   gcd,
-  modInverse,
+  extended_gcd,
 }
